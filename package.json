@@ -1,0 +1,28 @@
+{
+  "name": "street-craps-arduino",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamjohn777/Street-craps-arduino.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kamjohn777/Street-craps-arduino/issues"
+  },
+  "homepage": "https://github.com/kamjohn777/Street-craps-arduino#readme",
+  "dependencies": {
+    "@serialport/parser-readline": "^13.0.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "serialport": "^13.0.0",
+    "socket.io": "^4.8.4"
+  }
+}
