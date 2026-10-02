@@ -141,6 +141,10 @@
 	object-fit: contain;
 }
 
+.player-panel__turn-indicator.is-shooter {
+	filter: sepia(1) saturate(6) hue-rotate(var(--shooter-hue, 0deg));
+}
+
 @media (max-width: 700px) {
 	.player-panel__content {
 		inset-inline: 36% 7%;

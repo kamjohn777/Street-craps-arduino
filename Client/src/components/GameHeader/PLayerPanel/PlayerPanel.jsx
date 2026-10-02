@@ -1,20 +1,20 @@
 import './PlayerPanel.css'
-import orangeFrame from '../../../assets/gameheader/street-craps-orange-HUD-frame.png'
-import blueFrame from '../../../assets/gameheader/street-craps-blue-HUD-frame.png'
-import redFrame from '../../../assets/gameheader/street-craps-red-HUD-frame.png'
-import purpleFrame from '../../../assets/gameheader/street-craps-purple-HUG-frame.png'
+import orangeFrame from '../../../assets/gameheader/street-craps-orange-HUD-frame-bg.png'
+import blueFrame from '../../../assets/gameheader/street-craps-blue-HUD-frame-bg.png'
+import redFrame from '../../../assets/gameheader/street-craps-red-HUD-frame-bg.png'
+import purpleFrame from '../../../assets/gameheader/street-craps-purple-HUG-frame-bg.png'
 import orangePortrait from '../../../assets/characters/street-craps-player-portrait-orange.png'
 import bluePortrait from '../../../assets/characters/street-craps-player-portrait-blue.png'
 import redPortrait from '../../../assets/characters/street-craps-player-portrait-red.png'
 import purplePortrait from '../../../assets/characters/street-craps-player-portrait-purple.png'
-import shooterIndicator from '../../../assets/gameheader/street-craps-shooter-img-rmbg.png'
+import shooterIndicator from '../../../assets/gameheader/street-craps-shooter-img.png'
 import waitingIndicator from '../../../assets/gameheader/street-craps-waiting-img.png'
 
 const characterAssets = {
-  orange: { frame: orangeFrame, portrait: orangePortrait, accent: '#ff9d00' },
-  blue: { frame: blueFrame, portrait: bluePortrait, accent: '#08adf4' },
-  red: { frame: redFrame, portrait: redPortrait, accent: '#ff2439' },
-  purple: { frame: purpleFrame, portrait: purplePortrait, accent: '#c21cff' }
+  orange: { frame: orangeFrame, portrait: orangePortrait, accent: '#ff9d00', shooterHue: '0deg' },
+  blue: { frame: blueFrame, portrait: bluePortrait, accent: '#08adf4', shooterHue: '155deg' },
+  red: { frame: redFrame, portrait: redPortrait, accent: '#ff2439', shooterHue: '310deg' },
+  purple: { frame: purpleFrame, portrait: purplePortrait, accent: '#c21cff', shooterHue: '245deg' }
 }
 
 function PlayerPanel({ player, onCharacterChange }) {
@@ -28,7 +28,8 @@ function PlayerPanel({ player, onCharacterChange }) {
       aria-label={`${playerName} player panel`}
       style={{
         '--hud-frame': `url("${assets.frame}")`,
-        '--player-accent': assets.accent
+        '--player-accent': assets.accent,
+        '--shooter-hue': assets.shooterHue
       }}
     >
       <img className="player-panel__portrait" src={assets.portrait} alt={`${character} character`} />
