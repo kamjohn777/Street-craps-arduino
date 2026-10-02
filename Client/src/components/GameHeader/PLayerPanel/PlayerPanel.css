@@ -67,7 +67,7 @@
 	margin: 0;
 	overflow: hidden;
 	color: var(--player-accent);
-	font-size: clamp(0.9rem, 2.1vw, 1.7rem);
+	font-size: clamp(0.7rem, 1.7vw, 1.4rem);
 	font-style: italic;
 	font-weight: 900;
 	line-height: 1;
@@ -88,13 +88,13 @@
 .player-panel__bankroll span,
 .player-panel__eyebrow {
 	color: #c6c3bd;
-	font-size: clamp(0.45rem, 0.8vw, 0.68rem);
+	font-size: clamp(0.4rem, 0.7vw, 0.6rem);
 	font-weight: 700;
 }
 
 .player-panel__bankroll strong {
 	margin-top: 0.1em;
-	font-size: clamp(1.1rem, 2.2vw, 1.8rem);
+	font-size: clamp(0.9rem, 1.8vw, 1.45rem);
 }
 
 .player-panel__bets {
