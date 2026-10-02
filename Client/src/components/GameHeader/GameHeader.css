@@ -1,0 +1,55 @@
+.game-header {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(220px, 320px) minmax(0, 1fr);
+	grid-template-areas: 'player-one logo player-two';
+	align-items: center;
+	gap: 1rem;
+	width: min(100%, 1600px);
+	margin-inline: auto;
+	padding: 1rem;
+}
+
+.game-header > .player-panel:first-child {
+	grid-area: player-one;
+}
+
+.game-header > .game-logo {
+	grid-area: logo;
+}
+
+.game-header > .player-panel:last-child {
+	grid-area: player-two;
+}
+
+@media (max-width: 900px) {
+	.game-header {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-template-areas:
+			'logo logo'
+			'player-one player-two';
+		gap: 0.5rem;
+	}
+
+	.game-header > .game-logo {
+		width: min(240px, 65vw);
+		height: min(240px, 65vw);
+		justify-self: center;
+	}
+}
+
+@media (max-width: 520px) {
+	.game-header {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			'logo'
+			'player-one'
+			'player-two';
+		gap: 0.25rem;
+		padding: 0.5rem;
+	}
+
+	.game-header > .player-panel {
+		width: min(100%, 440px);
+		justify-self: center;
+	}
+}

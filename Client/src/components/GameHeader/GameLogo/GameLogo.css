@@ -1,0 +1,15 @@
+.game-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: min(320px, 80vw);
+    height: min(320px, 80vw);
+    flex: 0 0 auto;
+}
+
+.game-logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
