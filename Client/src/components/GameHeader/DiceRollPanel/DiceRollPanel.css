@@ -1,0 +1,220 @@
+.dice-roll {
+	position: relative;
+	isolation: isolate;
+	width: 100%;
+	min-width: 0;
+	aspect-ratio: 5.2;
+	overflow: hidden;
+	color: #f4f1eb;
+	font-family: 'Trebuchet MS', sans-serif;
+}
+
+.dice-roll__frame {
+	position: absolute;
+	z-index: -1;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: fill;
+	pointer-events: none;
+}
+
+.dice-roll__content {
+	position: absolute;
+	inset: 12% 5% 13%;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto minmax(4.5rem, 0.42fr);
+	align-items: center;
+	gap: clamp(0.35rem, 1.2vw, 1rem);
+}
+
+.dice-roll__prompt {
+	min-width: 0;
+	padding-left: 5%;
+	text-align: center;
+	text-shadow: 0 2px 3px #000;
+}
+
+.dice-roll__turn {
+	margin: 0;
+	color: #ffb21b;
+	font-size: clamp(0.85rem, 2vw, 1.65rem);
+	font-style: italic;
+	font-weight: 900;
+	line-height: 1;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.dice-roll__turn span {
+	color: #f4f1eb;
+}
+
+.dice-roll__shake {
+	margin: 0.25em 0 0;
+	color: #f4f1eb;
+	font-size: clamp(0.75rem, 1.55vw, 1.25rem);
+	font-style: italic;
+	font-weight: 900;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.dice-roll__instruction {
+	margin: 0.25em 0 0;
+	color: #c4c6c8;
+	font-size: clamp(0.5rem, 0.8vw, 0.7rem);
+	line-height: 1.1;
+}
+
+.dice-roll__dice {
+	display: flex;
+	gap: clamp(0.3rem, 1vw, 0.8rem);
+	align-items: center;
+	justify-content: center;
+}
+
+.dice-roll__die {
+	--die-size: clamp(2.15rem, 6vw, 4.4rem);
+	display: grid;
+	width: calc(var(--die-size) * 1.5);
+	aspect-ratio: 1.35;
+	place-items: center;
+	perspective: 18rem;
+}
+
+.dice-roll__cube {
+	position: relative;
+	width: var(--die-size);
+	aspect-ratio: 1;
+	transform: rotateX(-25deg) rotateY(-35deg);
+	transform-style: preserve-3d;
+}
+
+.dice-roll__die--2 .dice-roll__cube {
+	transform: rotateX(-20deg) rotateY(-45deg);
+}
+
+.dice-roll__face {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+	gap: 4%;
+	padding: 12%;
+	border: 1px solid rgba(255, 255, 255, 0.55);
+	border-radius: 2%;
+	backface-visibility: hidden;
+}
+
+.dice-roll__face--front {
+	background: linear-gradient(145deg, #f078ff 0%, #a92add 54%, #5e128c 100%);
+	box-shadow: inset -3px -4px 7px rgba(35, 0, 65, 0.5);
+	transform: translateZ(calc(var(--die-size) / 2));
+}
+
+.dice-roll__face--back {
+	background: #5e128c;
+	transform: rotateY(180deg) translateZ(calc(var(--die-size) / 2));
+}
+
+.dice-roll__face--right {
+	background: linear-gradient(145deg, #8a1bb8, #3c075f);
+	box-shadow: inset -4px 0 7px rgba(20, 0, 40, 0.45);
+	transform: rotateY(90deg) translateZ(calc(var(--die-size) / 2));
+}
+
+.dice-roll__face--left {
+	background: #4b0a70;
+	transform: rotateY(-90deg) translateZ(calc(var(--die-size) / 2));
+}
+
+.dice-roll__face--top {
+	background: linear-gradient(145deg, #ffadff, #cf56f2 75%, #9130c9);
+	box-shadow: inset 0 3px 7px rgba(255, 255, 255, 0.25);
+	transform: rotateX(90deg) translateZ(calc(var(--die-size) / 2));
+}
+
+.dice-roll__face--bottom {
+	background: #380650;
+	transform: rotateX(-90deg) translateZ(calc(var(--die-size) / 2));
+}
+
+.dice-roll__pip {
+	align-self: center;
+	justify-self: center;
+	width: 70%;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+.dice-roll__last-roll {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	align-self: stretch;
+	min-width: 0;
+	margin-block: 3%;
+	border: 1px solid rgba(117, 137, 151, 0.48);
+	border-radius: 9px;
+	background: linear-gradient(145deg, rgba(8, 15, 22, 0.82), rgba(1, 5, 9, 0.74));
+	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+	text-shadow: 0 2px 3px #000;
+}
+
+.dice-roll__last-label {
+	color: #aeb6bf;
+	font-size: clamp(0.42rem, 0.7vw, 0.6rem);
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.dice-roll__total {
+	margin-top: 0.05em;
+	font-size: clamp(1.2rem, 3vw, 2.35rem);
+	line-height: 0.95;
+}
+
+.dice-roll__breakdown {
+	margin-top: 0.15em;
+	font-size: clamp(0.55rem, 0.9vw, 0.75rem);
+	font-weight: 700;
+}
+
+@media (max-width: 640px) {
+	.dice-roll {
+		width: 100%;
+	}
+
+	.dice-roll__content {
+		inset-inline: 7%;
+	}
+
+	.dice-roll__turn {
+		font-size: clamp(0.72rem, 3vw, 1.1rem);
+	}
+
+	.dice-roll__shake {
+		font-size: clamp(0.65rem, 2.6vw, 0.95rem);
+	}
+}
+
+@media (max-width: 380px) {
+	.dice-roll__content {
+		grid-template-columns: minmax(0, 1fr) auto minmax(3.5rem, 0.4fr);
+		gap: 0.2rem;
+	}
+
+	.dice-roll__die {
+		--die-size: clamp(1.5rem, 10vw, 2.15rem);
+	}
+
+	.dice-roll__last-label,
+	.dice-roll__breakdown {
+		font-size: 0.45rem;
+	}
+}

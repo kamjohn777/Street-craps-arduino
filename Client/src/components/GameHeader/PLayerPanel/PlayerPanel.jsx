@@ -7,7 +7,7 @@ import orangePortrait from '../../../assets/characters/street-craps-player-portr
 import bluePortrait from '../../../assets/characters/street-craps-player-portrait-blue.png'
 import redPortrait from '../../../assets/characters/street-craps-player-portrait-red.png'
 import purplePortrait from '../../../assets/characters/street-craps-player-portrait-purple.png'
-import shooterIndicator from '../../../assets/gameheader/street-craps-shooter-img.png'
+import shooterIndicator from '../../../assets/gameheader/street-craps-shooter-img-2.png'
 import waitingIndicator from '../../../assets/gameheader/street-craps-waiting-img.png'
 
 const characterAssets = {

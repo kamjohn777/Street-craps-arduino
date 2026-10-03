@@ -1,3 +1,20 @@
 .app-shell {
   min-height: 100svh;
 }
+
+.game-panels {
+  display: grid;
+  grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(0.5rem, 1vw, 1rem);
+  width: min(100%, 1280px);
+  margin-inline: auto;
+  padding-inline: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+
+@media (max-width: 640px) {
+  .game-panels {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+}
