@@ -4,17 +4,34 @@
 
 .game-panels {
   display: grid;
-  grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+  grid-template-columns: minmax(210px, 280px) minmax(0, 1fr) minmax(210px, 300px);
   align-items: start;
-  gap: clamp(0.5rem, 1vw, 1rem);
+  gap: clamp(0.15rem, 0.35vw, 0.35rem);
   width: min(100%, 1280px);
   margin-inline: auto;
   padding-inline: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+
+@media (max-width: 900px) {
+  .game-panels {
+    grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+  }
+
+  .game-panels > .outcome-panel {
+    grid-column: 2;
+    justify-self: end;
+    width: min(100%, 300px);
+  }
 }
 
 @media (max-width: 640px) {
   .game-panels {
     grid-template-columns: minmax(0, 1fr);
     justify-items: center;
+  }
+
+  .game-panels > .outcome-panel {
+    grid-column: 1;
+    justify-self: center;
   }
 }

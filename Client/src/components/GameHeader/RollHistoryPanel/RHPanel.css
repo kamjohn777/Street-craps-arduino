@@ -1,7 +1,7 @@
 .roll-history {
 	position: relative;
 	isolation: isolate;
-	width: clamp(210px, 22vw, 280px);
+	width: 100%;
 	aspect-ratio: 0.64;
 	overflow: hidden;
 	color: #f1f1f3;
@@ -149,10 +149,4 @@
 	color: #aeb6bf;
 	font-size: 0.75rem;
 	text-align: center;
-}
-
-@media (max-width: 520px) {
-	.roll-history {
-		width: min(100%, 280px);
-	}
 }
