@@ -1,0 +1,201 @@
+.game-board {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 1.78;
+  overflow: hidden;
+  color: #f5f2e8;
+  font-family: 'Trebuchet MS', sans-serif;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.8);
+}
+
+.game-board__frame {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.game-board__layout {
+  position: absolute;
+  inset: 13% 7% 13%;
+  display: grid;
+  grid-template-columns: 7% minmax(0, 1fr) 7%;
+  grid-template-rows: 27% 35% 27% 11%;
+  align-items: stretch;
+  justify-items: stretch;
+}
+
+.game-board__side {
+  display: grid;
+  grid-row: 1 / -1;
+  place-items: center;
+  border: 1px solid rgba(239, 230, 194, 0.85);
+  color: #eee8d3;
+  font-size: clamp(0.42rem, 0.8vw, 0.78rem);
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+
+.game-board__side--left {
+  grid-column: 1;
+  transform: rotate(180deg);
+}
+
+.game-board__side--right {
+  grid-column: 3;
+}
+
+.game-board__numbers {
+  display: grid;
+  grid-column: 2;
+  grid-row: 1;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.game-board__number {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(239, 230, 194, 0.9);
+  color: #f5f2e8;
+  font-size: clamp(0.85rem, 2.2vw, 2rem);
+  font-weight: 900;
+}
+
+.game-board__number.is-point {
+  color: #ffd65b;
+  background: rgba(255, 185, 35, 0.16);
+  box-shadow: inset 0 0 1rem rgba(255, 190, 45, 0.3);
+}
+
+.game-board__point-marker {
+  position: absolute;
+  top: 5%;
+  padding: 0.1em 0.35em;
+  border: 1px solid #ffd65b;
+  border-radius: 999px;
+  color: #1c1709;
+  background: #ffd65b;
+  font-size: clamp(0.4rem, 0.65vw, 0.62rem);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.game-board__come {
+  display: grid;
+  grid-column: 2;
+  grid-row: 2;
+  place-items: center;
+  margin: 1.5% 5% 0;
+  border: 2px solid rgba(245, 237, 205, 0.9);
+  border-radius: 2.5rem 2.5rem 0.3rem 0.3rem;
+  color: #fa5149;
+  font-size: clamp(1.7rem, 5.6vw, 4.8rem);
+  font-style: italic;
+  font-weight: 1000;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 0 #811d19, 0 4px 6px rgba(0, 0, 0, 0.75);
+}
+
+.game-board__field {
+  display: grid;
+  grid-column: 2;
+  grid-row: 3;
+  grid-template-rows: 1fr auto;
+  justify-items: center;
+  margin: 0 5%;
+  border: 2px solid rgba(245, 237, 205, 0.88);
+  border-radius: 48% 48% 0.35rem 0.35rem / 65% 65% 0.35rem 0.35rem;
+  background: rgba(6, 47, 36, 0.28);
+}
+
+.game-board__field-label {
+  align-self: end;
+  color: #ffcb42;
+  font-size: clamp(0.7rem, 1.6vw, 1.35rem);
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.game-board__field-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.35rem, 1.35vw, 1.25rem);
+  width: 100%;
+  padding: 0 0.25rem 2%;
+  font-size: clamp(0.6rem, 1.5vw, 1.25rem);
+  font-weight: 900;
+}
+
+.game-board__field-numbers span + span::before {
+  content: '·';
+  margin-right: clamp(0.35rem, 1.35vw, 1.25rem);
+  color: #ffcb42;
+}
+
+.game-board__field-numbers .is-double {
+  display: grid;
+  width: clamp(1.4rem, 3.5vw, 3rem);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 2px solid #ffcb42;
+  border-radius: 50%;
+  color: #ffcb42;
+  font-size: 1.15em;
+}
+
+.game-board__pass-line {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 4;
+  place-items: center;
+  border: 2px solid rgba(245, 237, 205, 0.9);
+  border-radius: 0 0 1rem 1rem;
+  color: #f5f2e8;
+  font-size: clamp(0.7rem, 1.8vw, 1.45rem);
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .game-board__side {
+    font-size: clamp(0.38rem, 1.4vw, 0.65rem);
+  }
+
+  .game-board__number {
+    font-size: clamp(0.8rem, 4vw, 1.6rem);
+  }
+
+  .game-board__come {
+    font-size: clamp(1.5rem, 9vw, 3.5rem);
+  }
+
+  .game-board__field-label,
+  .game-board__pass-line {
+    font-size: clamp(0.65rem, 3vw, 1.1rem);
+  }
+
+  .game-board__field-numbers {
+    gap: clamp(0.2rem, 1.2vw, 0.65rem);
+    font-size: clamp(0.52rem, 2.6vw, 0.95rem);
+  }
+
+  .game-board__field-numbers span + span::before {
+    margin-right: clamp(0.2rem, 1.2vw, 0.65rem);
+  }
+}

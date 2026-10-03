@@ -12,6 +12,14 @@
   padding-inline: clamp(0.75rem, 1.5vw, 1.25rem);
 }
 
+.table-area {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: clamp(0.15rem, 0.35vw, 0.35rem);
+  min-width: 0;
+}
+
 @media (max-width: 900px) {
   .game-panels {
     grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
