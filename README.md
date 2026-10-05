@@ -5,41 +5,41 @@ rolls and displaying them in a browser. The intended setup is an Arduino that
 reads two dice, a Node.js server that validates and distributes each roll, and
 a React client that displays the game.
 
-> **Implementation status:** The backend roll API and Socket.IO broadcast are
-> implemented. The React app currently shows a static UI with example data; it
-> is not connected to the server yet. There is no Arduino sketch in this
-> repository yet, and the server does not currently read a serial port. See
+> **Implementation status:** The Arduino sketch detects a shake and submits a
+> generated dice roll over Wi-Fi. The backend validates and broadcasts rolls,
+> and the dice panel connects to the server, animates Arduino shakes, and shows
+> the accepted faces. Other game panels still use example data. See
 > [CRAPS_RULES.md](./CRAPS_RULES.md) for the fuller rules and project status.
 
 ## How the pieces fit together
 
 ```text
-Arduino (planned)
-  reads / determines die1 and die2
+Arduino
+  detects a shake and generates die1 and die2
   POSTs a roll over Wi-Fi
           |
           v
 Node.js + Express server
   validates the roll and keeps the latest roll in memory
           |
-          +---- Socket.IO "dice-roll" event ----> Browser clients (planned)
+          +---- Socket.IO "dice-shake", then "dice-roll" ----> Dice panel
           |
           +---- HTTP response ------------------> Arduino
 
-React + Vite client (current UI is static and not yet connected)
+React + Vite client (dice panel connected; other panels use sample data)
 ```
 
 The intended data flow is:
 
-1. The Arduino determines the values of two dice.
+1. The Arduino detects a new shake and determines the values of two dice.
 2. It sends `die1`, `die2`, and their `total` to the backend using HTTP.
 3. The server checks that both dice are integers from 1 through 6 and that
    `total` equals their sum.
-4. For a valid roll, the server assigns an increasing ID, records it as the
-   latest roll in memory, and emits a `dice-roll` event to connected Socket.IO
-   clients.
-5. The server responds to the HTTP request with the accepted roll. A future
-   connected frontend can use the Socket.IO event to update its display live.
+4. For a valid Arduino roll, the server emits `dice-shake` to start the panel
+   animation, then publishes the accepted `dice-roll` after 900 ms.
+5. The server assigns an increasing ID, records the roll in memory, and
+   responds to the Arduino. The browser updates the dice faces from the live
+   event; it also fetches the latest roll when it starts.
 
 The server currently distributes dice results only. It does not yet calculate
 craps outcomes, manage a point, process bets, or persist rolls across restarts.
@@ -60,8 +60,7 @@ craps outcomes, manage a point, process bets, or persist rolls across restarts.
         └── components/        Game header and display panels
 ```
 
-Arduino firmware is not included yet. When it is added, it can live in an
-`Arduino/` directory (for example, as an Arduino IDE `.ino` sketch).
+The Arduino firmware is in the root-level `arduino-street-craps.ino` sketch.
 
 ## Technology and package roles
 
@@ -79,15 +78,14 @@ Arduino firmware is not included yet. When it is added, it can live in an
 
 - **React** builds the browser interface from components.
 - **Vite** runs the development server and builds the static frontend.
-- The current panels use sample dice rolls and player data. The client does not
-  yet install `socket.io-client` or fetch roll data from the backend.
+- The dice roll panel uses live Socket.IO events and fetches the latest roll
+  when it connects. Other panels still use sample data.
 
-### Arduino (planned)
+### Arduino
 
-The intended Arduino responsibility is to read or determine the two die values
-and submit them to the backend over a network connection. The Arduino code must
-provide its own connectivity and HTTP request logic; no board, sensor, wiring,
-or firmware behavior is specified by the current repository.
+The sketch detects a shake, generates two die values, and submits them to the
+backend over Wi-Fi. Configure the network credentials and server address in the
+sketch before uploading it to the board.
 
 ## Getting started
 
@@ -115,8 +113,9 @@ npm run dev
 ```
 
 Vite prints the local URL to open in a browser (usually
-`http://localhost:5173`). The frontend is currently a visual prototype and will
-not display live backend rolls yet.
+`http://localhost:5173`). The dice panel connects to the backend at port `3000`
+on the browser's current hostname by default. Set `VITE_SERVER_URL` before
+starting Vite if the backend is hosted at another URL.
 
 To create and lint a production frontend build:
 
@@ -176,6 +175,8 @@ memory and are lost when the server restarts.
 
 ### Socket.IO events
 
+- **Server to clients — `dice-shake`:** emitted when a valid Arduino roll is
+  received, with `{ "duration": 900 }` to set the animation length.
 - **Server to clients — `dice-roll`:** emitted to all connected sockets for
   every accepted Arduino or phone roll. The payload has the same roll fields as
   the successful response, without `success`; `source` is `"arduino"` or
@@ -184,8 +185,9 @@ memory and are lost when the server restarts.
   "total": 6 }`. Invalid values cause the server to emit `roll-error` back to
   the submitting socket.
 
-The server does not currently send the latest roll automatically when a
-Socket.IO client connects. The React app is not yet listening to these events.
+The dice panel fetches the latest roll when it loads and listens for both
+`dice-shake` and `dice-roll` events. The server does not automatically send the
+latest roll on Socket.IO connection.
 
 ## Game rules
 

@@ -51,6 +51,23 @@ let latestRoll = null;
 // Unique ID for every roll
 let rollId = 0;
 
+const DICE_SHAKE_DURATION_MS = 900;
+
+
+function isValidRoll(die1, die2, total) {
+
+  return (
+    Number.isInteger(die1) &&
+    Number.isInteger(die2) &&
+    Number.isInteger(total) &&
+    die1 >= 1 &&
+    die1 <= 6 &&
+    die2 >= 1 &&
+    die2 <= 6 &&
+    total === die1 + die2
+  );
+}
+
 
 // ========================================
 // PUBLISH DICE ROLL
@@ -63,40 +80,7 @@ function publishRoll(
   source
 ) {
 
-  // ----------------------------------------
-  // Make sure all values are integers
-  // ----------------------------------------
-
-  if (
-    !Number.isInteger(die1) ||
-    !Number.isInteger(die2) ||
-    !Number.isInteger(total)
-  ) {
-
-    return null;
-  }
-
-
-  // ----------------------------------------
-  // Make sure each die is between 1 and 6
-  // ----------------------------------------
-
-  if (
-    die1 < 1 ||
-    die1 > 6 ||
-    die2 < 1 ||
-    die2 > 6
-  ) {
-
-    return null;
-  }
-
-
-  // ----------------------------------------
-  // Make sure total is actually correct
-  // ----------------------------------------
-
-  if (total !== die1 + die2) {
+  if (!isValidRoll(die1, die2, total)) {
 
     return null;
   }
@@ -166,31 +150,23 @@ app.post('/api/roll', (req, res) => {
     die1,
     die2,
     total
-  } = req.body;
+  } = req.body || {};
 
 
   // ----------------------------------------
   // Convert values to numbers
   // ----------------------------------------
 
-  const result = publishRoll(
-
-    Number(die1),
-
-    Number(die2),
-
-    Number(total),
-
-    'arduino'
-
-  );
+  const die1Value = Number(die1);
+  const die2Value = Number(die2);
+  const totalValue = Number(total);
 
 
   // ----------------------------------------
   // Reject invalid roll
   // ----------------------------------------
 
-  if (!result) {
+  if (!isValidRoll(die1Value, die2Value, totalValue)) {
 
     return res.status(400).json({
 
@@ -202,27 +178,52 @@ app.post('/api/roll', (req, res) => {
 
   }
 
-
-  // ----------------------------------------
-  // Log roll
-  // ----------------------------------------
-
-  console.log(
-    `[Arduino] Dice received: ${result.die1} + ${result.die2} = ${result.total}`
-  );
-
-
-  // ----------------------------------------
-  // Send response to Arduino
-  // ----------------------------------------
-
-  res.json({
-
-    success: true,
-
-    ...result
-
+  io.emit('dice-shake', {
+    duration: DICE_SHAKE_DURATION_MS
   });
+
+  setTimeout(() => {
+
+    const result = publishRoll(
+      die1Value,
+      die2Value,
+      totalValue,
+      'arduino'
+    );
+
+    if (!result) {
+
+      return res.status(500).json({
+
+        success: false,
+
+        error: 'Unable to publish dice roll.'
+
+      });
+    }
+
+    // ----------------------------------------
+    // Log roll
+    // ----------------------------------------
+
+    console.log(
+      `[Arduino] Dice received: ${result.die1} + ${result.die2} = ${result.total}`
+    );
+
+
+    // ----------------------------------------
+    // Send response to Arduino
+    // ----------------------------------------
+
+    res.json({
+
+      success: true,
+
+      ...result
+
+    });
+
+  }, DICE_SHAKE_DURATION_MS);
 
 });
 

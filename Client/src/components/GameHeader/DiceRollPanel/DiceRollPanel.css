@@ -67,11 +67,37 @@
 	line-height: 1.1;
 }
 
+.dice-roll__instruction--error {
+	color: #ff8b8b;
+}
+
 .dice-roll__dice {
 	display: flex;
 	gap: clamp(0.3rem, 1vw, 0.8rem);
 	align-items: center;
 	justify-content: center;
+}
+
+.dice-roll__dice--shaking .dice-roll__die {
+	animation: dice-roll-shake var(--dice-roll-shake-duration, 900ms) ease-in-out both;
+}
+
+.dice-roll__dice--shaking .dice-roll__die--2 {
+	animation-direction: reverse;
+}
+
+@keyframes dice-roll-shake {
+	0%, 100% {
+		transform: translate(0, 0) rotate(0deg);
+	}
+
+	15%, 55%, 85% {
+		transform: translate(-8%, -12%) rotate(-12deg);
+	}
+
+	30%, 70% {
+		transform: translate(8%, 4%) rotate(12deg);
+	}
 }
 
 .dice-roll__die {
@@ -200,6 +226,12 @@
 
 	.dice-roll__shake {
 		font-size: clamp(0.65rem, 2.6vw, 0.95rem);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dice-roll__dice--shaking .dice-roll__die {
+		animation: none;
 	}
 }
 

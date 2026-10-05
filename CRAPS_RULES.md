@@ -273,11 +273,11 @@ For Don't Pass on the Come-Out Roll, 2 or 3 wins, 12 pushes, and 7 or 11 loses. 
 ## Current Functionality
 
 - The Node.js/Express server listens on port `3000` on all network interfaces.
-- `POST /api/roll` accepts `{ "die1": 4, "die2": 2, "total": 6 }`, validates the values, stores the latest roll in memory, and broadcasts the `dice-roll` Socket.IO event.
+- `POST /api/roll` accepts `{ "die1": 4, "die2": 2, "total": 6 }`, validates the values, emits `dice-shake` for 900 ms, then stores the latest roll and broadcasts `dice-roll`.
 - `GET /api/roll/latest` returns the latest accepted roll or `null` before the first roll.
 - The server accepts a `phone-roll` Socket.IO event with the same dice fields.
-- The `Client/` folder contains a Vite/React starter and Street Craps image assets; it is not yet connected to Socket.IO or implemented as the game UI.
-- Arduino firmware, the physical sensor flow, craps game-state/rules processing, and betting are not yet implemented.
+- The dice panel in `Client/` fetches the latest roll, animates Arduino shake events, and displays accepted dice faces. Other panels still use sample data.
+- The root-level Arduino sketch detects a shake, generates dice values, and submits them over Wi-Fi. Craps game-state/rules processing and betting are not yet implemented.
 
 The server's Socket.IO event currently reports a dice result; it does not yet publish an authoritative game-state update.
 
@@ -302,7 +302,7 @@ Content-Type: application/json
 {"die1":4,"die2":2,"total":6}
 ```
 
-For the current Vite starter, use another terminal:
+To run the Vite client, use another terminal:
 
 ```bash
 cd Client
@@ -310,7 +310,10 @@ npm install
 npm run dev
 ```
 
-The React app does not currently include `socket.io-client`, so it does not yet consume the `dice-roll` event. The SerialPort packages present in the backend dependencies are not used by this Wi-Fi HTTP path.
+The dice panel connects to the backend at port `3000` on the browser's current
+hostname by default. Set `VITE_SERVER_URL` before starting Vite if the backend
+is hosted at another URL. The SerialPort packages present in the backend
+dependencies are not used by this Wi-Fi HTTP path.
 
 ## Project Philosophy
 
