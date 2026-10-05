@@ -99,6 +99,7 @@ function publishRoll(
   const phase = gameState.phase;
   const point = gameState.point;
   let outcome;
+  let turnEnds = false;
 
   if (phase === 'come-out') {
 
@@ -108,11 +109,13 @@ function publishRoll(
 
     } else if (total === 2 || total === 3) {
 
-      outcome = 'Craps — Pass Line loses.';
+      outcome = `Craps — Pass Line loses; Player ${player}'s turn ends.`;
+      turnEnds = true;
 
     } else if (total === 12) {
 
-      outcome = "Craps — Pass Line loses; Don't Pass pushes.";
+      outcome = `Craps — Pass Line loses; Don't Pass pushes; Player ${player}'s turn ends.`;
+      turnEnds = true;
 
     } else {
 
@@ -130,15 +133,21 @@ function publishRoll(
 
   } else if (total === 7) {
 
-    gameState.currentPlayer = player === 1 ? 2 : 1;
     gameState.point = null;
     gameState.phase = 'come-out';
     outcome = `Seven-out — Player ${player}'s turn ends.`;
+    turnEnds = true;
 
   } else {
 
     outcome = `No decision — point is ${point}.`;
 
+  }
+
+  if (turnEnds) {
+    gameState.currentPlayer = player === 1 ? 2 : 1;
+    gameState.point = null;
+    gameState.phase = 'come-out';
   }
 
   // ----------------------------------------

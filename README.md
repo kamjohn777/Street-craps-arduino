@@ -81,8 +81,10 @@ The Arduino firmware is in the root-level `arduino-street-craps.ino` sketch.
 - **React** builds the browser interface from components.
 - **Vite** runs the development server and builds the static frontend.
 - The dice roll panel uses live Socket.IO events. The game tracks Come-Out and
-  Point phases, rotates the shooter between two players after a Seven-Out, and
-  displays in-memory roll history attributed to the shooter for each roll.
+  Point phases, rotates the shooter between two players after a Come-Out 2/3/12
+  or Point-Phase Seven-Out, and displays in-memory roll history attributed to
+  the shooter for each roll. Switching after Come-Out craps is a project
+  house rule rather than standard craps shooter procedure.
 - Bet selection is visual only; bets and bankrolls are not settled.
 
 ### Arduino

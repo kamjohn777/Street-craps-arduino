@@ -166,10 +166,11 @@ The shooter is the player currently rolling. The shooter starts with a Come-Out 
 The initial Street Craps plan is a two-player rotation:
 
 - Player 1 starts as shooter.
-- When Player 1 Seven-Outs, Player 2 becomes shooter.
-- When Player 2 Seven-Outs, Player 1 becomes shooter.
+- In this project's turn-rotation house rule, a Come-Out craps roll of 2, 3, or 12 ends the current player's turn and passes the dice to the other player.
+- A Seven-Out (7 during the Point Phase) ends the current player's turn and passes the dice to the other player.
+- A Come-Out natural (7 or 11), an established point, or a made point does not switch the shooter.
 
-This describes the planned two-player implementation. The standard bet outcomes above remain the casino rules; the simplified player rotation is a project scope choice.
+This describes the two-player implementation. Switching players after a Come-Out craps roll is a project-specific house rule; standard craps does not end the shooter's turn for a Come-Out 2, 3, or 12. The standard bet outcomes above otherwise remain the casino rules.
 
 ## Roll Examples
 
@@ -277,7 +278,7 @@ For Don't Pass on the Come-Out Roll, 2 or 3 wins, 12 pushes, and 7 or 11 loses. 
 - `GET /api/roll/latest` returns the latest accepted roll or `null` before the first roll.
 - `GET /api/game` returns the current shooter, phase, point, last outcome, and roll history.
 - The server accepts a `phone-roll` Socket.IO event with the same dice fields.
-- The game implements Come-Out and Point phase outcomes, retains the shooter after a natural, craps result, or made point, and passes the shooter to the other player after a Seven-Out.
+- The game implements Come-Out and Point phase outcomes, retains the shooter after a natural, point establishment, or made point, and passes the shooter to the other player after a Come-Out 2/3/12 (project house rule) or a Point-Phase Seven-Out.
 - The roll history stores each roll with its assigned player, phase, point, outcome, dice, and timestamp. The client displays the history and live point/shooter state.
 - The root-level Arduino sketch detects a shake, generates dice values, and submits them over Wi-Fi. Bet settlement and bankroll updates are not yet implemented.
 
