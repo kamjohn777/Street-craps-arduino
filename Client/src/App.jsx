@@ -4,6 +4,7 @@ import RollHistoryPanel from './components/GameHeader/RollHistoryPanel/RHPanel'
 import DiceRollPanel from './components/GameHeader/DiceRollPanel/DiceRollPanel'
 import GameBoard from './components/GameHeader/GameBoard/GameBoard'
 import OutComePanel from './components/GameHeader/OutComePanel/OutComePanel'
+import BottomPanel from './components/BottomPanel/BottomPanel'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         </div>
         <OutComePanel />
       </div>
+      <BottomPanel />
     </main>
   )
 }
