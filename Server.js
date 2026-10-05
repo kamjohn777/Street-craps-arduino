@@ -48,6 +48,16 @@ const io = new Server(server, {
 // Most recent dice roll
 let latestRoll = null;
 
+const rollHistory = [];
+
+const gameState = {
+  currentPlayer: 1,
+  phase: 'come-out',
+  point: null,
+  lastOutcome: 'Waiting for the first roll.',
+  lastRollId: 0
+};
+
 // Unique ID for every roll
 let rollId = 0;
 
@@ -85,6 +95,51 @@ function publishRoll(
     return null;
   }
 
+  const player = gameState.currentPlayer;
+  const phase = gameState.phase;
+  const point = gameState.point;
+  let outcome;
+
+  if (phase === 'come-out') {
+
+    if (total === 7 || total === 11) {
+
+      outcome = 'Natural — Pass Line wins.';
+
+    } else if (total === 2 || total === 3) {
+
+      outcome = 'Craps — Pass Line loses.';
+
+    } else if (total === 12) {
+
+      outcome = "Craps — Pass Line loses; Don't Pass pushes.";
+
+    } else {
+
+      gameState.point = total;
+      gameState.phase = 'point';
+      outcome = `Point established: ${total}.`;
+
+    }
+
+  } else if (total === point) {
+
+    gameState.point = null;
+    gameState.phase = 'come-out';
+    outcome = `Point ${point} made — Pass Line wins.`;
+
+  } else if (total === 7) {
+
+    gameState.currentPlayer = player === 1 ? 2 : 1;
+    gameState.point = null;
+    gameState.phase = 'come-out';
+    outcome = `Seven-out — Player ${player}'s turn ends.`;
+
+  } else {
+
+    outcome = `No decision — point is ${point}.`;
+
+  }
 
   // ----------------------------------------
   // Create roll object
@@ -100,19 +155,33 @@ function publishRoll(
 
     total,
 
-    source
+    source,
+
+    player,
+
+    phase,
+
+    point,
+
+    outcome,
+
+    createdAt: new Date().toISOString()
 
   };
+
+  gameState.lastOutcome = outcome;
+  gameState.lastRollId = latestRoll.id;
+  rollHistory.push(latestRoll);
 
 
   // ----------------------------------------
   // Send roll to connected browsers
   // ----------------------------------------
 
-  io.emit(
-    'dice-roll',
-    latestRoll
-  );
+  io.emit('dice-roll', {
+    ...latestRoll,
+    gameState: { ...gameState }
+  });
 
 
   // ----------------------------------------
@@ -235,6 +304,19 @@ app.post('/api/roll', (req, res) => {
 app.get('/api/roll/latest', (req, res) => {
 
   res.json(latestRoll);
+
+});
+
+// ========================================
+// GET GAME STATE AND ROLL HISTORY
+// ========================================
+
+app.get('/api/game', (req, res) => {
+
+  res.json({
+    ...gameState,
+    history: rollHistory
+  });
 
 });
 

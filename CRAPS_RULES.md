@@ -35,7 +35,7 @@ When the physical shake input activates, the Arduino is intended to generate two
 }
 ```
 
-The current Node server accepts this shape at `POST /api/roll`, validates that the dice values are valid and that their sum matches `total`, then broadcasts a `dice-roll` Socket.IO event. The event also contains an `id` and `source`. The server should ultimately own the authoritative craps rules and game state. The Arduino should handle physical input, dice generation, and network communication rather than deciding which bets win.
+The current Node server accepts this shape at `POST /api/roll`, validates that the dice values are valid and that their sum matches `total`, applies the Come-Out/Point and shooter rotation rules, and broadcasts a `dice-roll` Socket.IO event. The event includes the assigned shooter and outcome. The Arduino handles physical input, dice generation, and network communication rather than deciding game rules.
 
 ## Basic Craps Concepts
 
@@ -210,7 +210,7 @@ To implement the game, the server will eventually need to track:
 - Roll history.
 - Winning, losing, and pushed bets, including payout and bankroll changes.
 
-Come and Don't Come bets can have separate points while the table point remains active. The current server does **not** implement these game rules or track the game state. It currently stores only the latest accepted roll in memory and an incrementing roll ID.
+Come and Don't Come bets can have separate points while the table point remains active. The current server implements the main Come-Out/Point flow and two-player shooter rotation, but does not implement separate Come/Don't Come points, bet settlement, or bankroll updates.
 
 ## Planned Betting Features
 
@@ -258,7 +258,7 @@ For Don't Pass on the Come-Out Roll, 2 or 3 wins, 12 pushes, and 7 or 11 loses. 
 
 | Technology | Role |
 | --- | --- |
-| Arduino UNO R4 WiFi | Planned shake input, digital dice generation, and Wi-Fi communication |
+| Arduino UNO R4 WiFi | Shake input, digital dice generation, and Wi-Fi communication |
 | Wi-Fi | Sends the roll from Arduino to a server reachable on the network |
 | C++ | Arduino firmware language |
 | Node.js | Backend JavaScript runtime |
@@ -273,13 +273,15 @@ For Don't Pass on the Come-Out Roll, 2 or 3 wins, 12 pushes, and 7 or 11 loses. 
 ## Current Functionality
 
 - The Node.js/Express server listens on port `3000` on all network interfaces.
-- `POST /api/roll` accepts `{ "die1": 4, "die2": 2, "total": 6 }`, validates the values, emits `dice-shake` for 900 ms, then stores the latest roll and broadcasts `dice-roll`.
+- `POST /api/roll` accepts `{ "die1": 4, "die2": 2, "total": 6 }`, validates the values, emits `dice-shake` for 900 ms, then applies the game rules, stores the roll, and broadcasts `dice-roll`.
 - `GET /api/roll/latest` returns the latest accepted roll or `null` before the first roll.
+- `GET /api/game` returns the current shooter, phase, point, last outcome, and roll history.
 - The server accepts a `phone-roll` Socket.IO event with the same dice fields.
-- The dice panel in `Client/` fetches the latest roll, animates Arduino shake events, and displays accepted dice faces. Other panels still use sample data.
-- The root-level Arduino sketch detects a shake, generates dice values, and submits them over Wi-Fi. Craps game-state/rules processing and betting are not yet implemented.
+- The game implements Come-Out and Point phase outcomes, retains the shooter after a natural, craps result, or made point, and passes the shooter to the other player after a Seven-Out.
+- The roll history stores each roll with its assigned player, phase, point, outcome, dice, and timestamp. The client displays the history and live point/shooter state.
+- The root-level Arduino sketch detects a shake, generates dice values, and submits them over Wi-Fi. Bet settlement and bankroll updates are not yet implemented.
 
-The server's Socket.IO event currently reports a dice result; it does not yet publish an authoritative game-state update.
+The server keeps game state and roll history in memory; both reset when it restarts. Bet placement, payout settlement, and bankroll updates remain unimplemented.
 
 ## Running the Current Server
 
@@ -310,13 +312,13 @@ npm install
 npm run dev
 ```
 
-The dice panel connects to the backend at port `3000` on the browser's current
+The client connects to the backend at port `3000` on the browser's current
 hostname by default. Set `VITE_SERVER_URL` before starting Vite if the backend
 is hosted at another URL. The SerialPort packages present in the backend
 dependencies are not used by this Wi-Fi HTTP path.
 
 ## Project Philosophy
 
-The Arduino is responsible for physical dice input, generating two die values, and communicating the roll over Wi-Fi. The Node.js server should become the authoritative owner of the craps rules and game state so all clients see the same result. React should display the game state and provide the player interface. Socket.IO should distribute dice rolls and, once implemented, game-state changes in real time.
+The Arduino is responsible for physical dice input, generating two die values, and communicating the roll over Wi-Fi. The Node.js server owns the implemented craps round state and two-player shooter rotation so all clients see the same result. React displays the game state and provides the player interface. Socket.IO distributes dice rolls and game-state changes in real time.
 
 The project can be built in stages: first make roll delivery reliable, then add a simplified standard craps ruleset, and finally add the broader range of bets and casino procedures. Planned features should remain clearly labeled until they are implemented.

@@ -11,7 +11,11 @@ const propositionBets = [
   { label: 'Pass Line', className: 'pass-line' }
 ]
 
-function OutComePanel() {
+function OutComePanel({
+  phase = 'come-out',
+  point = null,
+  lastOutcome = 'Waiting for the first roll.'
+}) {
   const [selectedBet, setSelectedBet] = useState('')
 
   function clearBet() {
@@ -24,12 +28,17 @@ function OutComePanel() {
       <div className="outcome-panel__content">
         <section className="game-status" aria-labelledby="game-status-title">
           <h2 className="outcome-panel__heading" id="game-status-title">Game Status</h2>
-          <p className="game-status__phase">Come Out Roll</p>
+          <p className="game-status__phase">
+            {phase === 'point' ? 'Point Phase' : 'Come-Out Roll'}
+          </p>
           <div className="game-status__point">
             <span>Point</span>
-            <strong aria-label="No point set">—</strong>
-            <span>(Not Set)</span>
+            <strong aria-label={point === null ? 'No point set' : `Point ${point}`}>
+              {point ?? '—'}
+            </strong>
+            <span>{point === null ? '(Not Set)' : '(Established)'}</span>
           </div>
+          <p className="game-status__outcome" aria-live="polite">{lastOutcome}</p>
         </section>
 
         <section className="place-bets" aria-labelledby="place-bets-title">

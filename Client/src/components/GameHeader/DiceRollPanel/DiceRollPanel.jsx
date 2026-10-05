@@ -38,9 +38,18 @@ function DieFace({ value, position }) {
   )
 }
 
-function Die({ value, className = '' }) {
+function Die({ value, index }) {
+  const restingAngles = index === 0
+    ? { '--dice-rest-x': '-25deg', '--dice-rest-y': '-35deg' }
+    : { '--dice-rest-x': '-20deg', '--dice-rest-y': '-45deg' }
+
   return (
-    <span className={`dice-roll__die ${className}`} role="img" aria-label={`Die showing ${value}`}>
+    <span
+      className={`dice-roll__die dice-roll__die--${index + 1}`}
+      style={restingAngles}
+      role="img"
+      aria-label={`Die showing ${value}`}
+    >
       <span className="dice-roll__cube" aria-hidden="true">
         <DieFace value={value} position="front" />
         <DieFace value={7 - value} position="back" />
@@ -172,7 +181,7 @@ function DiceRollPanel({ currentPlayer = 1, dice = [4, 3] }) {
           aria-label={`Dice: ${visibleDice.join(' and ')}`}
         >
           {visibleDice.map((value, index) => (
-            <Die key={index} value={value} className={`dice-roll__die--${index + 1}`} />
+            <Die key={index} value={value} index={index} />
           ))}
         </div>
         <div className="dice-roll__last-roll" aria-label={`Last roll: ${total}, ${visibleDice[0]} plus ${visibleDice[1]}`}>

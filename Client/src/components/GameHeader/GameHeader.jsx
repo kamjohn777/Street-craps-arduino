@@ -3,7 +3,7 @@ import './GameHeader.css'
 import GameLogo from './GameLogo/GameLogo'
 import PlayerPanel from './PLayerPanel/PlayerPanel'
 
-function GameHeader() {
+function GameHeader({ currentPlayer = 1 }) {
   const [players, setPlayers] = useState([
     {
       playerNumber: 1,
@@ -12,15 +12,13 @@ function GameHeader() {
       currentBets: [
         { label: 'Pass Line', amount: 10 },
         { label: 'Field', amount: 5 }
-      ],
-      isShooter: true
+      ]
     },
     {
       playerNumber: 2,
       character: 'purple',
       bankroll: 100,
-      currentBets: [{ label: 'Come', amount: 5 }],
-      isShooter: false
+      currentBets: [{ label: 'Come', amount: 5 }]
     }
   ])
 
@@ -33,12 +31,12 @@ function GameHeader() {
   return (
     <header className="game-header" aria-label="Street Craps game header">
       <PlayerPanel
-        player={players[0]}
+        player={{ ...players[0], isShooter: currentPlayer === 1 }}
         onCharacterChange={(character) => updateCharacter(1, character)}
       />
       <GameLogo />
       <PlayerPanel
-        player={players[1]}
+        player={{ ...players[1], isShooter: currentPlayer === 2 }}
         onCharacterChange={(character) => updateCharacter(2, character)}
       />
     </header>

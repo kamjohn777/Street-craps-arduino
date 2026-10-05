@@ -79,24 +79,91 @@
 }
 
 .dice-roll__dice--shaking .dice-roll__die {
-	animation: dice-roll-shake var(--dice-roll-shake-duration, 900ms) ease-in-out both;
-}
-
-.dice-roll__dice--shaking .dice-roll__die--2 {
-	animation-direction: reverse;
+	animation: dice-roll-shake var(--dice-roll-shake-duration, 900ms) linear both;
 }
 
 @keyframes dice-roll-shake {
-	0%, 100% {
-		transform: translate(0, 0) rotate(0deg);
+	0% {
+		transform: translate(0, 0) rotate(0deg) scale(1);
 	}
 
-	15%, 55%, 85% {
-		transform: translate(-8%, -12%) rotate(-12deg);
+	10%, 30%, 50%, 70% {
+		transform: translate(-5%, -7%) rotate(-6deg) scale(1.015);
 	}
 
-	30%, 70% {
-		transform: translate(8%, 4%) rotate(12deg);
+	20%, 40%, 60%, 80% {
+		transform: translate(5%, 4%) rotate(6deg) scale(0.99);
+	}
+
+	90% {
+		transform: translate(-1%, -2%) rotate(-2deg) scale(1.005);
+	}
+
+	100% {
+		transform: translate(0, 0) rotate(0deg) scale(1);
+	}
+}
+
+.dice-roll__dice--shaking .dice-roll__cube {
+	animation: dice-cube-tumble var(--dice-roll-shake-duration, 900ms) linear both;
+}
+
+@keyframes dice-cube-tumble {
+	0% {
+		transform:
+			rotateX(var(--dice-rest-x))
+			rotateY(var(--dice-rest-y))
+			rotateZ(0deg);
+	}
+
+	20% {
+		transform:
+			rotateX(calc(var(--dice-rest-x) + 140deg))
+			rotateY(calc(var(--dice-rest-y) + 155deg))
+			rotateZ(16deg);
+	}
+
+	40% {
+		transform:
+			rotateX(calc(var(--dice-rest-x) + 290deg))
+			rotateY(calc(var(--dice-rest-y) + 300deg))
+			rotateZ(-12deg);
+	}
+
+	60% {
+		transform:
+			rotateX(calc(var(--dice-rest-x) + 440deg))
+			rotateY(calc(var(--dice-rest-y) + 450deg))
+			rotateZ(10deg);
+	}
+
+	78% {
+		transform:
+			rotateX(calc(var(--dice-rest-x) + 570deg))
+			rotateY(calc(var(--dice-rest-y) + 585deg))
+			rotateZ(-7deg);
+	}
+
+	88% {
+		transform:
+			rotateX(calc(var(--dice-rest-x) + 660deg))
+			rotateY(calc(var(--dice-rest-y) + 665deg))
+			rotateZ(4deg);
+	}
+
+	94% {
+		transform:
+			rotateX(calc(var(--dice-rest-x) + 700deg))
+			rotateY(calc(var(--dice-rest-y) + 700deg))
+			rotateZ(-1deg);
+		animation-timing-function: cubic-bezier(0.2, 0.75, 0.25, 1);
+	}
+
+	100% {
+		transform:
+			rotateX(calc(var(--dice-rest-x) + 720deg))
+			rotateY(calc(var(--dice-rest-y) + 720deg))
+			rotateZ(0deg);
 	}
 }
 
@@ -113,12 +180,8 @@
 	position: relative;
 	width: var(--die-size);
 	aspect-ratio: 1;
-	transform: rotateX(-25deg) rotateY(-35deg);
+	transform: rotateX(var(--dice-rest-x)) rotateY(var(--dice-rest-y));
 	transform-style: preserve-3d;
-}
-
-.dice-roll__die--2 .dice-roll__cube {
-	transform: rotateX(-20deg) rotateY(-45deg);
 }
 
 .dice-roll__face {
@@ -230,7 +293,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.dice-roll__dice--shaking .dice-roll__die {
+	.dice-roll__dice--shaking .dice-roll__die,
+	.dice-roll__dice--shaking .dice-roll__cube {
 		animation: none;
 	}
 }
