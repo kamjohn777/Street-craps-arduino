@@ -462,7 +462,8 @@ function App() {
       currentBets: [],
       sideBets: []
     })))
-    setBetStatus('Starting bankroll set for both players.')
+    setLastBet(null)
+    setBetStatus(`Both players' bankrolls reset to $${amount.toLocaleString()}; active bets cleared.`)
   }
 
   function updateCharacter(playerNumber, character) {
@@ -502,7 +503,6 @@ function App() {
         onAmountChange={setSelectedAmount}
         startingBankroll={startingBankroll}
         onStartingBankrollChange={changeStartingBankroll}
-        canSetStartingBankroll={game.lastRollId === 0 && players.every((player) => !player.activeBet)}
         availableBalance={players.find((player) => player.playerNumber === game.currentPlayer)?.bankroll ?? 0}
         betStatus={betStatus}
         onPlaceBet={() => placeBet(selectedBet)}

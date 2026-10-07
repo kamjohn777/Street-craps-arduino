@@ -9,7 +9,6 @@ function BottomPanel({
   onAmountChange,
   startingBankroll,
   onStartingBankrollChange,
-  canSetStartingBankroll,
   availableBalance,
   betStatus,
   onPlaceBet,
@@ -50,7 +49,6 @@ function BottomPanel({
             id="starting-bankroll"
             className="bottom-panel__bankroll-select"
             value={startingBankroll}
-            disabled={!canSetStartingBankroll}
             onChange={onStartingBankrollChange}
           >
             {startingAmounts.map((amount) => (

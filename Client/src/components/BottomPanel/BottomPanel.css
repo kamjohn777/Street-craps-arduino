@@ -112,19 +112,23 @@
 }
 
 .bottom-panel__chip--1 {
-  background: linear-gradient(145deg, #d8d8d8, #737373);
+  border-color: #ffc45c;
+  background: linear-gradient(145deg, #ffb21b, #a94d00);
 }
 
 .bottom-panel__chip--5 {
-  background: linear-gradient(145deg, #fa3535, #a80913);
+  border-color: #62c9ff;
+  background: linear-gradient(145deg, #08adf4, #07518d);
 }
 
 .bottom-panel__chip--25 {
-  background: linear-gradient(145deg, #16c779, #087843);
+  border-color: #e38cff;
+  background: linear-gradient(145deg, #c21cff, #620b91);
 }
 
 .bottom-panel__chip--100 {
-  background: linear-gradient(145deg, #444, #101010);
+  border-color: #ff7785;
+  background: linear-gradient(145deg, #ff2439, #8e1021);
 }
 
 .bottom-panel__chip:hover,
@@ -141,7 +145,26 @@
 }
 
 .bottom-panel__chip.is-selected {
-  box-shadow: 0 0 0 2px #fff, 0 0 10px currentColor, inset 0 0 0 3px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 12px var(--chip-glow, #fff),
+    inset 0 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.bottom-panel__chip--1 {
+  --chip-glow: #ffb21b;
+}
+
+.bottom-panel__chip--5 {
+  --chip-glow: #08adf4;
+}
+
+.bottom-panel__chip--25 {
+  --chip-glow: #c21cff;
+}
+
+.bottom-panel__chip--100 {
+  --chip-glow: #ff2439;
 }
 
 .bottom-panel__actions {
