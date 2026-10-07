@@ -129,10 +129,12 @@ Common standard payouts are:
 | 6 or 8 | 7:6 |
 
 Exact payouts and whether a Place Bet is working on a Come-Out Roll can vary by casino. A game should define its house convention rather than leave this ambiguous.
+This client uses the common 9:5, 7:5, and 7:6 payouts shown above, and Place Bets are working on every roll.
 
 ## Field Bet
 
 The Field is a **one-roll** bet. It wins on **2, 3, 4, 9, 10, 11, or 12** and loses on **5, 6, 7, or 8**. The 2 and 12 commonly pay more than the other Field numbers, but the extra payout varies by casino.
+This client pays 2:1 on 2, 3:1 on 12, and 1:1 on the other Field wins.
 
 ## Come Bet
 

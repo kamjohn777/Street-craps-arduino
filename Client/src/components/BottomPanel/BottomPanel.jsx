@@ -1,12 +1,22 @@
-import { useState } from 'react'
 import './BottomPanel.css'
 import bottomPanelFrame from '../../assets/panels/street-craps-bottom-panel.png'
 
 const chipAmounts = [1, 5, 25, 100]
+const startingAmounts = [100, 250, 500, 1000, 5000]
 
-function BottomPanel({ onRoll, onUndoBet, onRepeatBet }) {
-  const [selectedAmount, setSelectedAmount] = useState(5)
-
+function BottomPanel({
+  selectedAmount,
+  onAmountChange,
+  startingBankroll,
+  onStartingBankrollChange,
+  canSetStartingBankroll,
+  availableBalance,
+  betStatus,
+  onPlaceBet,
+  onUndoBet,
+  onRepeatBet,
+  canRepeatBet
+}) {
   return (
     <section className="bottom-panel" aria-label="Bet amount and game actions">
       <img className="bottom-panel__frame" src={bottomPanelFrame} alt="" aria-hidden="true" />
@@ -20,12 +30,34 @@ function BottomPanel({ onRoll, onUndoBet, onRepeatBet }) {
                 key={amount}
                 type="button"
                 aria-pressed={selectedAmount === amount}
-                onClick={() => setSelectedAmount(amount)}
+                disabled={amount > availableBalance}
+                onClick={() => onAmountChange(amount)}
               >
                 ${amount}
               </button>
             ))}
           </div>
+          <p className="bottom-panel__selected-bet" aria-live="polite">
+            Automatic Pass Line + Add Bet amount: ${selectedAmount}
+          </p>
+        </div>
+
+        <div className="bottom-panel__starting-bankroll">
+          <label className="bottom-panel__heading" htmlFor="starting-bankroll">
+            Starting bankroll
+          </label>
+          <select
+            id="starting-bankroll"
+            className="bottom-panel__bankroll-select"
+            value={startingBankroll}
+            disabled={!canSetStartingBankroll}
+            onChange={onStartingBankrollChange}
+          >
+            {startingAmounts.map((amount) => (
+              <option key={amount} value={amount}>${amount.toLocaleString()}</option>
+            ))}
+          </select>
+          <p className="bottom-panel__selected-bet">For both players</p>
         </div>
 
         <div className="bottom-panel__actions">
@@ -34,10 +66,10 @@ function BottomPanel({ onRoll, onUndoBet, onRepeatBet }) {
             <button
               className="bottom-panel__action bottom-panel__action--roll"
               type="button"
-              onClick={onRoll}
+              onClick={onPlaceBet}
             >
-              <span className="bottom-panel__die-icon" aria-hidden="true">⚄</span>
-              Shake Dice to Roll
+              <span className="bottom-panel__die-icon" aria-hidden="true">●</span>
+              Add Bet
             </button>
             <button
               className="bottom-panel__action"
@@ -50,12 +82,14 @@ function BottomPanel({ onRoll, onUndoBet, onRepeatBet }) {
             <button
               className="bottom-panel__action"
               type="button"
+              disabled={!canRepeatBet}
               onClick={onRepeatBet}
             >
               <span className="bottom-panel__repeat-icon" aria-hidden="true">↻</span>
               Repeat Bets
             </button>
           </div>
+          <p className="bottom-panel__bet-status" role="status">{betStatus}</p>
         </div>
       </div>
     </section>

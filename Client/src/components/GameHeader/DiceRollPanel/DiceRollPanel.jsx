@@ -62,7 +62,7 @@ function Die({ value, index }) {
   )
 }
 
-function DiceRollPanel({ currentPlayer = 1, dice = [4, 3] }) {
+function DiceRollPanel({ currentPlayer = 1, turnColor = '#ff9d00', dice = [4, 3] }) {
   const [visibleDice, setVisibleDice] = useState(dice)
   const [isShaking, setIsShaking] = useState(false)
   const [connectionError, setConnectionError] = useState(false)
@@ -164,7 +164,7 @@ function DiceRollPanel({ currentPlayer = 1, dice = [4, 3] }) {
       <img className="dice-roll__frame" src={dicePanelFrame} alt="" aria-hidden="true" />
       <div className="dice-roll__content">
         <div className="dice-roll__prompt">
-          <h2 className="dice-roll__turn">
+          <h2 className="dice-roll__turn" style={{ '--turn-player-color': turnColor }}>
             Player {currentPlayer}'s <span>turn</span>
           </h2>
           <p className="dice-roll__shake" aria-live="polite">

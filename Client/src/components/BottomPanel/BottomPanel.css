@@ -32,7 +32,33 @@
   justify-self: center;
 }
 
+.bottom-panel__starting-bankroll {
+  grid-column: 2;
+  justify-self: center;
+  text-align: center;
+}
+
+.bottom-panel__bankroll-select {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0.25rem 0.45rem;
+  border: 1px solid #71808b;
+  border-radius: 4px;
+  color: #f4f1eb;
+  background: #18212a;
+  font: inherit;
+  font-size: clamp(0.62rem, 0.9vw, 0.8rem);
+  font-weight: 800;
+}
+
+.bottom-panel__bankroll-select:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
 .bottom-panel__heading {
+  display: block;
   margin: 0 0 0.4rem;
   color: #d5d9dd;
   font-size: clamp(0.62rem, 0.8vw, 0.78rem);
@@ -51,6 +77,20 @@
 
 .bottom-panel__chips {
   gap: clamp(0.3rem, 0.75vw, 0.75rem);
+}
+
+.bottom-panel__selected-bet,
+.bottom-panel__bet-status {
+  margin: 0.35rem 0 0;
+  color: #d5d9dd;
+  font-size: clamp(0.48rem, 0.65vw, 0.64rem);
+  line-height: 1.2;
+  text-shadow: 0 1px 3px #000;
+}
+
+.bottom-panel__bet-status {
+  max-width: 28rem;
+  text-align: right;
 }
 
 .bottom-panel__chip {
@@ -91,6 +131,13 @@
 .bottom-panel__chip.is-selected {
   filter: brightness(1.18);
   transform: translateY(-2px);
+}
+
+.bottom-panel__chip:disabled {
+  filter: grayscale(0.7);
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .bottom-panel__chip.is-selected {
@@ -136,6 +183,11 @@
   filter: brightness(1.2);
 }
 
+.bottom-panel__action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .bottom-panel__action--roll {
   min-width: clamp(8.5rem, 14vw, 12rem);
 }
@@ -172,6 +224,7 @@
   }
 
   .bottom-panel__bet-amount,
+  .bottom-panel__starting-bankroll,
   .bottom-panel__actions {
     grid-column: auto;
     justify-self: center;
@@ -179,6 +232,12 @@
 
   .bottom-panel__bet-amount {
     grid-row: 1;
+    grid-column: 1;
+  }
+
+  .bottom-panel__starting-bankroll {
+    grid-row: 1;
+    grid-column: 2;
   }
 
   .bottom-panel__actions {
@@ -188,6 +247,10 @@
 
   .bottom-panel__action-buttons {
     justify-content: center;
+  }
+
+  .bottom-panel__bet-status {
+    text-align: center;
   }
 
   .bottom-panel__chip {

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './OutComePanel.css'
 import rightPanelFrame from '../../../assets/panels/street-craps-right-side-panel.png'
 
@@ -14,12 +13,12 @@ const propositionBets = [
 function OutComePanel({
   phase = 'come-out',
   point = null,
-  lastOutcome = 'Waiting for the first roll.'
+  lastOutcome = 'Waiting for the first roll.',
+  selectedBet = '',
+  onBetSelect
 }) {
-  const [selectedBet, setSelectedBet] = useState('')
-
   function clearBet() {
-    setSelectedBet('')
+    onBetSelect?.('')
   }
 
   return (
@@ -55,7 +54,7 @@ function OutComePanel({
                 key={number}
                 type="button"
                 aria-pressed={selectedBet === String(number)}
-                onClick={() => setSelectedBet(String(number))}
+                onClick={() => onBetSelect?.(String(number))}
               >
                 {number}
               </button>
@@ -68,7 +67,7 @@ function OutComePanel({
                 key={label}
                 type="button"
                 aria-pressed={selectedBet === label}
-                onClick={() => setSelectedBet(label)}
+                onClick={() => onBetSelect?.(label)}
               >
                 {label}
               </button>

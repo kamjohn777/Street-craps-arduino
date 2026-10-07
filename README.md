@@ -205,4 +205,10 @@ connection.
 
 The detailed rules and planned gameplay features are in
 [CRAPS_RULES.md](./CRAPS_RULES.md). The server implements Come-Out/Point
-resolution and two-player shooter rotation; bets and payouts remain future work.
+resolution and two-player shooter rotation. The browser supports local Pass
+Line wagers, configurable starting bankrolls, and local bet settlement. The
+selected amount is wagered automatically on Pass Line before each Come-Out
+roll. Players can select a bet type in the Place Bets panel and use Add Bet
+to wager the selected chip amount. Wager and bankroll changes are not
+synchronized between clients or persisted by the server. Losing wagers are
+credited to the opposing player's bankroll.

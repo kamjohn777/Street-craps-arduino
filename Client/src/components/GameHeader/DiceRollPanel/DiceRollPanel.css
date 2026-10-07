@@ -37,7 +37,7 @@
 
 .dice-roll__turn {
 	margin: 0;
-	color: #ffb21b;
+	color: var(--turn-player-color, #ff9d00);
 	font-size: clamp(0.85rem, 2vw, 1.65rem);
 	font-style: italic;
 	font-weight: 900;
@@ -47,7 +47,7 @@
 }
 
 .dice-roll__turn span {
-	color: #f4f1eb;
+	color: inherit;
 }
 
 .dice-roll__shake {

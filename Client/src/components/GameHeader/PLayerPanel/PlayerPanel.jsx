@@ -57,8 +57,8 @@ function PlayerPanel({ player, onCharacterChange }) {
           <span className="player-panel__eyebrow">Current bets</span>
           {player.currentBets?.length ? (
             <ul>
-              {player.currentBets.map((bet) => (
-                <li key={bet.label}>
+              {player.currentBets.map((bet, index) => (
+                <li key={`${bet.label}-${bet.amount}-${index}`}>
                   <span>{bet.label}</span>
                   <strong>${Number(bet.amount).toLocaleString()}</strong>
                 </li>
